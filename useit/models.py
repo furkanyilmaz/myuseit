@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+#from django.contrib.auth.models import AbstractUser
 #from django.contrib.auth.base_user import BaseUserManager
 
 """class UserManager(BaseUserManager):
@@ -23,6 +23,8 @@ class User(models.Model):
     name = models.CharField(max_length=40, unique=True,blank= True,)
 
 
+
+
     def __str__(self):
         return self.name
 
@@ -42,6 +44,7 @@ class Tool(models.Model):
 
 
 class Goodside(models.Model):
+    tool = models.ForeignKey(Tool, null=True, on_delete=models.DO_NOTHING)
     content = models.TextField(max_length=500)
     users = models.ManyToManyField(User, blank=True)
     #created = models.DateTimeField(auto_now_add=True)
@@ -49,8 +52,8 @@ class Goodside(models.Model):
     def __str__(self):
         return self.content
 
-
 class Badside(models.Model):
+    tool = models.ForeignKey(Tool, null=True, on_delete=models.DO_NOTHING)
     content = models.TextField(verbose_name="ürün yorumu", max_length=500)
     users = models.ManyToManyField(User, blank=True)
     # created = models.DateTimeField(auto_now_add=True)
