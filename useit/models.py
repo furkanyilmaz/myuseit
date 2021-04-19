@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 #from django.contrib.auth.models import AbstractUser
 #from django.contrib.auth.base_user import BaseUserManager
 
@@ -18,16 +20,6 @@ from django.db import models
         user.save(using=self._db)
         return user """
 
-
-class User(models.Model):
-    name = models.CharField(max_length=40, unique=True,blank= True,)
-
-
-
-
-    def __str__(self):
-        return self.name
-
 class Tool(models.Model):
     #user = models.ForeignKey(User, on_delete=models.PROTECT, null= True)  # the owner
     name = models.CharField(max_length=50, verbose_name="tool name", blank=True, null=False, unique=True,
@@ -36,16 +28,28 @@ class Tool(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     website = models.URLField(max_length=200)
-    users = models.ManyToManyField(User, blank=True)
+    #users = models.ManyToManyField(User, blank=True)
     # users = models.ManyToManyField(UserManager, blank=True)
 
     def __str__(self):
         return self.name
 
 
+
+class User(models.Model):
+    first_name = models.CharField(max_length=30,blank=True)
+    last_name = models.CharField(max_length=30,blank=True)
+    email = models.EmailField(blank=True)
+    #name = models.CharField(max_length=40, unique=True,blank= True)
+    tool = models.ManyToManyField(Tool, max_length=22, null=True)
+
+
+    def __str__(self):
+        return self.first_name
+
 class Goodside(models.Model):
     tool = models.ForeignKey(Tool, null=True, on_delete=models.DO_NOTHING)
-    content = models.TextField(max_length=500)
+    content = models.TextField(verbose_name="ürün yorumu", max_length=500)
     users = models.ManyToManyField(User, blank=True)
     #created = models.DateTimeField(auto_now_add=True)
 
